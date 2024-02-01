@@ -8,7 +8,6 @@ from src.utils import Setting, models_load
 #from src.train import train, valid, test
 
 
-
 def main(args):
     Setting.seed_everything(args.seed)
     ####################### Setting for Log
