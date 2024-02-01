@@ -7,10 +7,11 @@ class AutoEncoder(nn.Module):
     """
     input : encoder_dims
 
-        layers = [dim1, dim2], [dim2,dim3], ... , [dim3, dim2], [dim2,dim1]
+        encoder = [n_items, dim1, dim2]
+        decoder_dims = [dim2, dim1, n_items]
     """
     
-    def __init__(self, encoder_dims, decoder_dims=None): # if encoder_dims = [n_items, dim1, dim2] -> decoder_dims = [dim2, dim1, n_items]
+    def __init__(self, encoder_dims, decoder_dims=None): 
         super(AutoEncoder, self).__init__()
         self.encoder_dims = encoder_dims
         if decoder_dims:

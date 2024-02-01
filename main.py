@@ -5,7 +5,7 @@ import yaml
 
 
 from src.utils import Setting, models_load
-#from src.data_preprocess.lightgbm_data import lightgbm_dataloader, lightgbm_preprocess_data, lightgbm_datasplit
+from src.dataloader import AE_loader, AE_process, AE_split
 #from src.train import train, valid, test
 
 
@@ -24,7 +24,7 @@ def main():
     ######################## DATA LOAD
     print(f'--------------- {config['model']} Load Data ---------------')
     if config['model'] in ('AutoEncoder'):
-        data = gbm_dataloader(args)
+        data = AE_loader(config)
     elif config['model'] in ('DAE'):
         data = lightgbm_dataloader(args)
     elif config['model'] in ('VAE'):
