@@ -1,30 +1,38 @@
 import os
 import argparse
 import pandas as pd
+import yaml
 
-from args import parse_args
+
 from src.utils import Setting, models_load
 #from src.data_preprocess.lightgbm_data import lightgbm_dataloader, lightgbm_preprocess_data, lightgbm_datasplit
 #from src.train import train, valid, test
 
 
-def main(args):
-    Setting.seed_everything(args.seed)
+def main():
+    ####################### args
+    config_path = './autoencoder.yaml'
+    with open(config_path) as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+        print(config)
+    
+    
     ####################### Setting for Log
+    Setting.seed_everything(config['seed'])
     setting = Setting()
     
     ######################## DATA LOAD
-    print(f'--------------- {args.model} Load Data ---------------')
-    if args.model in ('XGB'):
+    print(f'--------------- {config['model']} Load Data ---------------')
+    if config['model'] in ('AutoEncoder'):
         data = gbm_dataloader(args)
-    elif args.model in ('LIGHTGBM'):
+    elif config['model'] in ('DAE'):
         data = lightgbm_dataloader(args)
-    elif args.model in ('CATBOOST'):
+    elif config['model'] in ('VAE'):
         data = catboost_dataloader(args)
     else:
         pass
     
-    
+    return 
     ######################## DATA PREPROCESS
     print(f'--------------- {args.model} Data PREPROCESSING---------------')
     if args.model in ('XGB'):
@@ -120,6 +128,4 @@ def main(args):
     print('make csv file !!! ', filename)
 
 if __name__ == "__main__":
-    args = parse_args()
-    os.makedirs(name=args.model_dir, exist_ok=True)
-    main(args=args)
+    main()

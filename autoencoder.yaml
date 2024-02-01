@@ -1,0 +1,5 @@
+data_path: './data'
+model: 'AutoEncoder'
+dims: [600,200]
+learning_rate: 0.001
+seed: 42
