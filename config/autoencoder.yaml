@@ -5,6 +5,7 @@ valid_samples: 10
 
 model: 'AutoEncoder'
 dims: [600,200]
+activate_function: 'ReLU'
 
 model_path: './saved_models/'
 

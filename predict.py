@@ -66,36 +66,37 @@ def main():
     print(f'--------------- {config['model']} MODEL LOAD---------------')
     dims = [ae_dataloader.num_item] + config['dims'] #num_item = 6,807
     model = models_load(config, dims)
-    model.load_state_dict(torch.load(os.path.join(config['model_path'], config['model']+'.pt')))
+    
+    model_path = './saved_models/'
+    model.load_state_dict(torch.load(model_path))
     
     ndcg, best_hit = evaluate(model = model, data_loader = data_loader, user_train = train_dict, user_valid = valid_dict, make_matrix_data_set = ae_dataloader)
 
     ######################## INFERENCE
     print(f'--------------- {config['model']} PREDICT ---------------')
-    submission_data_loader = DataLoader(AE_dataset, batch_size = config['batch_size'], shuffle = False, pin_memory = True, num_workers = config['num_workers'])
-    model.load_state_dict(torch.load(os.path.join(config['model_path'], config['model']+'.pt')))
-    
+    submission_data_loader = DataLoader(AE_dataset, batch_size = config['batch_size'], shuffle = False, pin_memory = True, num_workers = config['num_workers'])    
     user2rec_list = predict(model = model, data_loader = submission_data_loader,user_train = train_dict, user_valid = valid_dict, make_matrix_data_set = ae_dataloader)
     
-    
-    ######################## SAVE PREDICT
-    print(f'--------------- SAVE PREDICT ---------------')
-    submission = []
-    users = [i for i in range(0, ae_dataloader.num_user)]
-    for user in users:
-        rec_item_list = user2rec_list[user]
-        for item in rec_item_list:
-            submission.append(
-                {   
-                    'user' : ae_dataloader.user_decoder[user],
-                    'item' : ae_dataloader.item_decoder[item],
-                }
-            )
-    filename = setting.get_submit_filename(config, best_hit)
-    
-    submission = pd.DataFrame(submission)
-    submission.to_csv(filename, index=False)
-    print('make csv file !!! ', filename)
+    output = input('출력 파일 생성하시겠습니까? (y/n): ')
+    if output == 'y':
+        ######################## SAVE PREDICT
+        print(f'--------------- SAVE PREDICT ---------------')
+        submission = []
+        users = [i for i in range(0, ae_dataloader.num_user)]
+        for user in users:
+            rec_item_list = user2rec_list[user]
+            for item in rec_item_list:
+                submission.append(
+                    {   
+                        'user' : ae_dataloader.user_decoder[user],
+                        'item' : ae_dataloader.item_decoder[item],
+                    }
+                )
+        filename = setting.get_submit_filename(config, best_hit)
+        
+        submission = pd.DataFrame(submission)
+        submission.to_csv(filename, index=False)
+        print('make csv file !!! ', filename)
     
 if __name__ == "__main__":
     main()

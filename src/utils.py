@@ -85,7 +85,7 @@ def models_load(config, dims):
     '''
 
     if config['model'] in ('AutoEncoder'):
-        model = AutoEncoder(dims)
+        model = AutoEncoder(config, dims)
     elif config['model'] in ('DAE'):
         pass
     elif config['model'] in ('VAE'):

@@ -11,7 +11,7 @@ class AutoEncoder(nn.Module):
         decoder_dims = [dim2, dim1, n_items]
     """
     
-    def __init__(self, encoder_dims, decoder_dims=None): 
+    def __init__(self, config, encoder_dims, decoder_dims=None): 
         super(AutoEncoder, self).__init__()
         self.encoder_dims = encoder_dims
         if decoder_dims:
@@ -21,10 +21,10 @@ class AutoEncoder(nn.Module):
         else:
             self.decoder_dims = encoder_dims[::-1]
         
-        self.encoder = self.build_layers(self.encoder_dims)
-        self.decoder = self.build_layers(self.decoder_dims)
+        self.encoder = self.build_layers(self.encoder_dims, config['activate_function'])
+        self.decoder = self.build_layers(self.decoder_dims, config['activate_function'])
 
-    def build_layers(self, dims):
+    def build_layers(self, dims, activate_function = 'ReLU'):
         """
         Helper function to build layers based on the provided dimensions.
 
@@ -37,7 +37,17 @@ class AutoEncoder(nn.Module):
         layers = []
         for i in range(1, len(dims)):
             layers.append(nn.Linear(dims[i-1], dims[i]))
-            layers.append(nn.ReLU())  
+            if i == len(dims)-1:
+                pass
+            else:
+                if activate_function == 'ReLU':
+                    layers.append(nn.ReLU())
+                elif activate_function == 'Sigmoid':
+                    layers.append(nn.Sigmoid())
+                elif activate_function == 'Tanh':
+                    layers.append(nn.Tanh())
+                else:
+                    pass
 
         return nn.Sequential(*layers)
         
