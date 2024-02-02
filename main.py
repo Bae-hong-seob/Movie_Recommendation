@@ -5,13 +5,13 @@ import yaml
 
 
 from src.utils import Setting, models_load
-from src.dataloader import AE_loader, AE_process, AE_split
+from src.dataloader import AE_loader, MakeMatrixDataSet, AE_split
 #from src.train import train, valid, test
 
 
 def main():
     ####################### args
-    config_path = './autoencoder.yaml'
+    config_path = './config/autoencoder.yaml'
     with open(config_path) as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
         print(config)
@@ -26,25 +26,26 @@ def main():
     if config['model'] in ('AutoEncoder'):
         data = AE_loader(config)
     elif config['model'] in ('DAE'):
-        data = lightgbm_dataloader(args)
+        pass
     elif config['model'] in ('VAE'):
-        data = catboost_dataloader(args)
+        pass
     else:
         pass
+    print(data.head(15))
     
-    return 
-    ######################## DATA PREPROCESS
-    print(f'--------------- {args.model} Data PREPROCESSING---------------')
-    if args.model in ('XGB'):
-        xgb_data = gbm_dataloader(args)
-    elif args.model in ('LIGHTGBM'):
-        data = lightgbm_preprocess_data(data)
-    elif args.model in ('CATBOOST'):
-        catboost_data = catboost_dataloader(args)
+    ######################## Make user-item matrix for AE
+    print(f'--------------- Make user-item matrix for {config['model']} ---------------')
+    if config['model'] in ('AutoEncoder'):
+        train, valid = MakeMatrixDataSet(config, data)
+    elif config['model'] in ('DAE'):
+        pass
+    elif config['model'] in ('VAE'):
+        pass
     else:
         pass
-    print('######################## DATA PREPROCESSING DONE !!!')
 
+    print(valid)
+    return
     
     ######################## Autogluon
     if args.autogluon == True:
