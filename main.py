@@ -16,13 +16,14 @@ from train.trainer import train, evaluate, predict
 
 
 def main():
-    ####################### args
+    ####################### configs
     config_path = './config/autoencoder.yaml'
     with open(config_path) as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
         print(config)
     
     os.makedirs(name=config['model_path'], exist_ok=True)
+
     
     ####################### Setting for Log
     Setting.seed_everything(config['seed'])
@@ -45,7 +46,7 @@ def main():
     ######################## Train/Valid Split
     print(f'\n--------------- {config['model']} Train/Valid Split ---------------')
     if config['model'] in ('AutoEncoder'):
-        train, valid = ae_dataloader.AE_split()
+        train_dict, valid_dict = ae_dataloader.AE_split()
     elif config['model'] in ('DAE'):
         pass
     elif config['model'] in ('VAE'):
@@ -53,8 +54,8 @@ def main():
     else:
         pass
 
-    print(f'n_items for first user to train: {len(train[0])}')
-    print(f'n_items for first user to valid: {len(valid[0])}')
+    print(f'n_items for first user to train: {len(train_dict[0])}')
+    print(f'n_items for first user to valid: {len(valid_dict[0])}')
     
     ######################## Make DataLoader for pytorch
     print(f'\n--------------- {config['model']} Make DataLoader for pytorch ---------------')
@@ -76,7 +77,7 @@ def main():
         tbar = tqdm(range(1))
         for _ in tbar:
             train_loss = train(model = model, criterion = criterion, optimizer = optimizer, data_loader = data_loader, make_matrix_data_set = ae_dataloader)
-            ndcg, hit = evaluate(model = model, data_loader = data_loader,user_train = user_train,user_valid = user_valid,make_matrix_data_set = ae_dataloader)
+            ndcg, hit = evaluate(model = model, data_loader = data_loader, user_train = train_dict, user_valid = valid_dict, make_matrix_data_set = ae_dataloader)
 
             if best_hit < hit:
                 best_hit = hit

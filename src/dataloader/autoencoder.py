@@ -21,6 +21,8 @@ class AE_DataLoader:
         self.df['item_idx'] = self.df['item'].apply(lambda x : self.item_encoder[x])
         self.df['user_idx'] = self.df['user'].apply(lambda x : self.user_encoder[x])
         
+        self.user_train, self.user_valid = self.AE_split()
+        
             
     def AE_loader(self):
         data_dir = self.config['data_dir']

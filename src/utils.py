@@ -92,4 +92,5 @@ def models_load(config, dims):
         pass
     else:
         raise ValueError('MODEL is not exist : select model in [AutoEncoder, DAE, VAE]')
+    
     return model

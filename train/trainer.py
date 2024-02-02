@@ -1,5 +1,10 @@
+import numpy as np
+import torch
+
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
 def train(model, criterion, optimizer, data_loader, make_matrix_data_set):
-    print('here')
+
     model.train()
     loss_val = 0
     for users in data_loader:
