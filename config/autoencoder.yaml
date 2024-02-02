@@ -5,4 +5,10 @@ valid_samples: 10
 
 model: 'AutoEncoder'
 dims: [600,200]
-learning_rate: 0.001
+
+model_path: './saved_models/'
+
+epochs: 10
+batch_size: 256
+learning_rate: 0.005
+num_workers: 2

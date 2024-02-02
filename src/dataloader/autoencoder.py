@@ -6,8 +6,7 @@ from collections import defaultdict
 
 
 class AE_DataLoader:
-    '''
-    '''
+    
     def __init__(self, config):
         self.config = config
         self.df = self.AE_loader()

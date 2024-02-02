@@ -3,7 +3,7 @@ import time
 import numpy as np
 import random
 
-from .models import *
+from .models.AutoEncoder import AutoEncoder
 
 class Setting:
     @staticmethod
@@ -74,7 +74,7 @@ class Setting:
         return path
     
     
-def models_load(args):
+def models_load(config, dims):
     '''
     [description]
     입력받은 args 값에 따라 모델을 선택하며, 모델이 존재하지 않을 경우 ValueError를 발생시킵니다.
@@ -84,13 +84,12 @@ def models_load(args):
     data : data는 data_loader로 처리된 데이터를 의미합니다.
     '''
 
-    if args.model=='AutoEncoder':
-        model = AutoEncoder()
-    elif args.model=='LIGHTGBM':
-        model = LIGTHGBM(args)
-    elif args.model=='CATBOOST':
-        model = CatBoost(args)
-
+    if config['model'] in ('AutoEncoder'):
+        model = AutoEncoder(dims)
+    elif config['model'] in ('DAE'):
+        pass
+    elif config['model'] in ('VAE'):
+        pass
     else:
         raise ValueError('MODEL is not exist : select model in [AutoEncoder, DAE, VAE]')
     return model

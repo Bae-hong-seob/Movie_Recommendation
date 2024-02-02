@@ -23,7 +23,6 @@ class AutoEncoder(nn.Module):
         
         self.encoder = self.build_layers(self.encoder_dims)
         self.decoder = self.build_layers(self.decoder_dims)
-        self.init_weights()
 
     def build_layers(self, dims):
         """
@@ -51,4 +50,4 @@ class AutoEncoder(nn.Module):
         return h
   
     def get_codes(self, x):
-    return self.encoder(x)
+        return self.encoder(x)
