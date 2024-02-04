@@ -16,6 +16,7 @@ from train.trainer import train, evaluate, predict
 
 
 def main():
+    
     ####################### configs
     config_path = './config/autoencoder.yaml'
     with open(config_path) as f:
@@ -67,15 +68,16 @@ def main():
     dims = [ae_dataloader.num_item] + config['dims'] #num_item = 6,807
     model = models_load(config, dims)
     
-    model_path = './saved_models/'
+    model_path = './saved_models/20240202_135646_AutoEncoder.pt'
     model.load_state_dict(torch.load(model_path))
     
-    ndcg, best_hit = evaluate(model = model, data_loader = data_loader, user_train = train_dict, user_valid = valid_dict, make_matrix_data_set = ae_dataloader)
+    ndcg, best_hit = evaluate(config, model, data_loader = data_loader, user_train = train_dict, user_valid = valid_dict, make_matrix_data_set = ae_dataloader)
 
     ######################## INFERENCE
     print(f'--------------- {config['model']} PREDICT ---------------')
+    torch.set_printoptions(profile="full") #torch내용 전체 출력
     submission_data_loader = DataLoader(AE_dataset, batch_size = config['batch_size'], shuffle = False, pin_memory = True, num_workers = config['num_workers'])    
-    user2rec_list = predict(model = model, data_loader = submission_data_loader,user_train = train_dict, user_valid = valid_dict, make_matrix_data_set = ae_dataloader)
+    user2rec_list = predict(config, model, data_loader = submission_data_loader,user_train = train_dict, user_valid = valid_dict, make_matrix_data_set = ae_dataloader)
     
     output = input('출력 파일 생성하시겠습니까? (y/n): ')
     if output == 'y':
@@ -86,6 +88,8 @@ def main():
         for user in users:
             rec_item_list = user2rec_list[user]
             for item in rec_item_list:
+                if user==0:
+                    print(f'user:{user} -> {ae_dataloader.user_decoder[user]}, item:{item} -> {ae_dataloader.item_decoder[item]}')
                 submission.append(
                     {   
                         'user' : ae_dataloader.user_decoder[user],

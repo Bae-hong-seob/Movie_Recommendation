@@ -78,7 +78,7 @@ def main():
         tbar = tqdm(range(1))
         for _ in tbar:
             train_loss = train(model = model, criterion = criterion, optimizer = optimizer, data_loader = data_loader, make_matrix_data_set = ae_dataloader)
-            ndcg, hit = evaluate(model = model, data_loader = data_loader, user_train = train_dict, user_valid = valid_dict, make_matrix_data_set = ae_dataloader)
+            ndcg, hit = evaluate(config=config, model = model, data_loader = data_loader, user_train = train_dict, user_valid = valid_dict, make_matrix_data_set = ae_dataloader)
 
             if best_hit < hit:
                 best_hit = hit
@@ -91,11 +91,11 @@ def main():
     submission_data_loader = DataLoader(AE_dataset, batch_size = config['batch_size'], shuffle = False, pin_memory = True, num_workers = config['num_workers'])
     model.load_state_dict(torch.load(os.path.join(config['model_path'], save_time + '_' + config['model'] + '.pt')))
     
-    user2rec_list = predict(model = model, data_loader = submission_data_loader,user_train = train_dict, user_valid = valid_dict, make_matrix_data_set = ae_dataloader)
+    user2rec_list = predict(config= config, model = model, data_loader = submission_data_loader,user_train = train_dict, user_valid = valid_dict, make_matrix_data_set = ae_dataloader)
     
     
     ######################## SAVE PREDICT
-    print(f'--------------- SAVE PREDICT ---------------')
+    print(f'\n--------------- SAVE PREDICT ---------------')
     with open('record.txt', 'a') as f:
         f.write(f"Tiemstamp:{setting.save_time}, Recall@10:{best_hit}\n")
     f.close()
@@ -105,6 +105,8 @@ def main():
     for user in users:
         rec_item_list = user2rec_list[user]
         for item in rec_item_list:
+            if user==0:
+                print(f'user:{user} -> {ae_dataloader.user_decoder[user]}, item:{item} -> {ae_dataloader.item_decoder[item]}')
             predicts.append(
                 {   
                     'user' : ae_dataloader.user_decoder[user],

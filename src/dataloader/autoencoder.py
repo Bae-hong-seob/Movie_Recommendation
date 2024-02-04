@@ -14,8 +14,8 @@ class AE_DataLoader:
         # self.df.sort_values(by=['user', 'time'], inplace=True)
         # self.df.reset_index(drop=True, inplace=True)
         
-        self.item_encoder, self.item_decoder = self.generate_encoder_decoder(self.df, 'item')
         self.user_encoder, self.user_decoder = self.generate_encoder_decoder(self.df, 'user')
+        self.item_encoder, self.item_decoder = self.generate_encoder_decoder(self.df, 'item')
         self.num_item, self.num_user = len(self.item_encoder), len(self.user_encoder)
 
         self.df['item_idx'] = self.df['item'].apply(lambda x : self.item_encoder[x])
@@ -49,7 +49,7 @@ class AE_DataLoader:
         encoder = {}
         decoder = {}
         ids = sorted(df[column_name].unique())
-        print(column_name, ids[:15])
+        print(f'n_{column_name}:{len(ids)} -> {ids[:20]}')
         
 
         for idx, _id in enumerate(ids):
@@ -64,7 +64,12 @@ class AE_DataLoader:
         sequence_data 생성
 
         Returns:
-            dict: train user sequence / valid user sequence
+            train user sequence / valid user sequence
+                user_trian / user_valid -> dict
+                    - {user1 : [item1, item2, ... ], 
+                        user2 : [item10, item 13, ...], 
+                        ... 
+                        }
         """
         users = defaultdict(list)
         user_train = {}
@@ -87,8 +92,8 @@ class AE_DataLoader:
     def make_matrix(self, user_list, train = True):
         """
         Args:
-            user_list -> dict
-                {user1 : [item1, item2, ...], user2 : [item5, item10, ...], ... , }
+            user_list.shape : [batch_size,1]
+                - [[user_number1], [user_number2], ... , [user_number{batch_size}]] 형태로 들어가 있음
                 
         Return:
             mat : user-item matrix

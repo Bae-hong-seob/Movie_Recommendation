@@ -2,6 +2,7 @@ data_dir: './data'
 
 seed: 42
 valid_samples: 10
+Recall@K: 10
 
 model: 'AutoEncoder'
 dims: [600,200]
