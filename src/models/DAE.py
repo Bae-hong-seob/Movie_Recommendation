@@ -13,6 +13,7 @@ class DAE(nn.Module):
     
     def __init__(self, config, encoder_dims, decoder_dims=None, dropout=0.5): 
         super(DAE, self).__init__()
+        self.config = config
         self.encoder_dims = encoder_dims
         if decoder_dims:
             assert decoder_dims[0] == encoder_dims[-1], "In and Out dimensions must equal to each other"
@@ -20,7 +21,8 @@ class DAE(nn.Module):
             self.decoder_dims = decoder_dims
         else:
             self.decoder_dims = encoder_dims[::-1]
-        
+            
+        self.drop = nn.Dropout(dropout)
         self.encoder = self.build_layers(self.encoder_dims, config['activate_function'])
         self.decoder = self.build_layers(self.decoder_dims, config['activate_function'])
         
@@ -53,13 +55,17 @@ class DAE(nn.Module):
         return nn.Sequential(*layers)
     
     def add_noise(self, matrix):
-        noise = torch.randn(matrix.shape) * 0.2
+        noise = torch.randn(matrix.shape) * 0.5
         matrix = matrix + noise
         return matrix
         
     def forward(self, input):
-        h = self.add_noise(input)
-        h = F.normalize(h)
+        if self.config['denoising'] == 'Dropout':
+            h = F.normalize(input)
+            h = self.drop(h)
+        elif self.config['denoising'] == 'Gaussian':
+            h = self.add_noise(input)
+            h = F.normalize(h)
 
         h = self.encoder(h)
         h = self.decoder(h)

@@ -17,7 +17,7 @@ from train.trainer import train, evaluate, predict
 
 def main():
     ####################### configs
-    model_name = input('모델을 선택하세요: AE | DAE :')
+    model_name = input('모델을 선택하세요(AE | DAE) :')
     #config_path = './config/autoencoder.yaml'
     config_path = './config/' + model_name +'.yaml'
     with open(config_path) as f:

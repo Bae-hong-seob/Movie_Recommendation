@@ -7,6 +7,7 @@ Recall@K: 10
 model: 'DAE'
 dims: [600,200]
 activate_function: 'ReLU'
+denoising: 'Dropout'
 
 model_path: './saved_models/'
 
