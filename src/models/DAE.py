@@ -14,7 +14,6 @@ class DAE(nn.Module):
     def __init__(self, config, encoder_dims, decoder_dims=None, dropout=0.5): 
         super(DAE, self).__init__()
         self.encoder_dims = encoder_dims
-        self.drop = nn.Dropout(dropout)
         if decoder_dims:
             assert decoder_dims[0] == encoder_dims[-1], "In and Out dimensions must equal to each other"
             assert decoder_dims[-1] == encoder_dims[0], "Latent dimension for p- and q- network mismatches."
@@ -52,10 +51,15 @@ class DAE(nn.Module):
                     pass
 
         return nn.Sequential(*layers)
+    
+    def add_noise(self, matrix):
+        noise = torch.randn(matrix.shape) * 0.2
+        matrix = matrix + noise
+        return matrix
         
     def forward(self, input):
-        h = F.normalize(input)
-        h = self.drop(h)
+        h = self.add_noise(input)
+        h = F.normalize(h)
 
         h = self.encoder(h)
         h = self.decoder(h)

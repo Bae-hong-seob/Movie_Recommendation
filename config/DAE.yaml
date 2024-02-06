@@ -10,7 +10,8 @@ activate_function: 'ReLU'
 
 model_path: './saved_models/'
 
-epochs: 20
+epochs: 10
 batch_size: 256
 learning_rate: 0.005
 num_workers: 2
+weight_decay: 0

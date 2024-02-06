@@ -17,7 +17,7 @@ from train.trainer import train, evaluate, predict
 
 def main():
     ####################### configs
-    model_name = input('모델을 선택하세요 autoencoder/DAE/ :')
+    model_name = input('모델을 선택하세요: AE | DAE :')
     #config_path = './config/autoencoder.yaml'
     config_path = './config/' + model_name +'.yaml'
     with open(config_path) as f:
@@ -65,7 +65,7 @@ def main():
     model = models_load(config, dims)
     print(model)
     criterion = nn.MSELoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=config['learning_rate'])
+    optimizer = torch.optim.Adam(model.parameters(), lr=config['learning_rate'], weight_decay=config['weight_decay'])
     
     ######################## TRAIN
     print(f'--------------- {config['model']} TRAINING ---------------')
