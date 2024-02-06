@@ -1,0 +1,16 @@
+data_dir: './data'
+
+seed: 42
+valid_samples: 10
+Recall@K: 10
+
+model: 'DAE'
+dims: [600,200]
+activate_function: 'ReLU'
+
+model_path: './saved_models/'
+
+epochs: 20
+batch_size: 256
+learning_rate: 0.005
+num_workers: 2

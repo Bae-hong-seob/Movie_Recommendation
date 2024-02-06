@@ -17,7 +17,9 @@ from train.trainer import train, evaluate, predict
 
 def main():
     ####################### configs
-    config_path = './config/autoencoder.yaml'
+    model_name = input('모델을 선택하세요 autoencoder/DAE/ :')
+    #config_path = './config/autoencoder.yaml'
+    config_path = './config/' + model_name +'.yaml'
     with open(config_path) as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
         print(config)
@@ -32,11 +34,8 @@ def main():
     ######################## DATA LOAD
     ae_dataloader = AE_DataLoader(config)
     print(f'\n--------------- {config['model']} Load Data ---------------')
-    if config['model'] in ('AutoEncoder'):
-        #data = AE_loader(config)
+    if config['model'] in ('AutoEncoder', 'DAE'):
         data = ae_dataloader.AE_loader()
-    elif config['model'] in ('DAE'):
-        pass
     elif config['model'] in ('VAE'):
         pass
     else:
@@ -45,10 +44,8 @@ def main():
     
     ######################## Train/Valid Split
     print(f'\n--------------- {config['model']} Train/Valid Split ---------------')
-    if config['model'] in ('AutoEncoder'):
+    if config['model'] in ('AutoEncoder', 'DAE'):
         train_dict, valid_dict = ae_dataloader.AE_split()
-    elif config['model'] in ('DAE'):
-        pass
     elif config['model'] in ('VAE'):
         pass
     else:

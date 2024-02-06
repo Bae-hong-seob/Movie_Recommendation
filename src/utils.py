@@ -4,6 +4,7 @@ import numpy as np
 import random
 
 from .models.AutoEncoder import AutoEncoder
+from .models.DAE import DAE
 
 class Setting:
     @staticmethod
@@ -87,6 +88,7 @@ def models_load(config, dims):
     if config['model'] in ('AutoEncoder'):
         model = AutoEncoder(config, dims)
     elif config['model'] in ('DAE'):
+        model = DAE(config, dims)
         pass
     elif config['model'] in ('VAE'):
         pass
