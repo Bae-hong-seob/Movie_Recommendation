@@ -87,12 +87,12 @@ def models_load(config, dims):
 
     if config['model'] in ('AutoEncoder'):
         model = AutoEncoder(config, dims)
-    elif config['model'] in ('DAE'):
+    elif config['model'] in ('DAE', 'Multi-DAE'):
         model = DAE(config, dims)
         pass
     elif config['model'] in ('VAE'):
         pass
     else:
-        raise ValueError('MODEL is not exist : select model in [AutoEncoder, DAE, VAE]')
+        raise ValueError('MODEL is not exist : select model in [AutoEncoder, DAE, Multi-DAE, VAE]')
     
     return model

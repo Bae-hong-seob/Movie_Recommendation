@@ -6,6 +6,7 @@ from tqdm import tqdm
 
 import torch
 import torch.nn as nn
+
 from torch.utils.data import Dataset, DataLoader
 
 from src.utils import Setting, models_load
@@ -14,10 +15,10 @@ from src.dataloader.autoencoder import AE_DataLoader, AE_DataSet
 from train.trainer import train, evaluate, predict
 
 
-
 def main():
     ####################### configs
-    model_name = input('모델을 선택하세요(AE | DAE) :')
+    print()
+    model_name = input('모델을 선택하세요(AE | DAE | Multi-DAE) :')
     #config_path = './config/autoencoder.yaml'
     config_path = './config/' + model_name +'.yaml'
     with open(config_path) as f:
@@ -34,7 +35,7 @@ def main():
     ######################## DATA LOAD
     ae_dataloader = AE_DataLoader(config)
     print(f'\n--------------- {config['model']} Load Data ---------------')
-    if config['model'] in ('AutoEncoder', 'DAE'):
+    if config['model'] in ('AutoEncoder', 'DAE', 'Multi-DAE'):
         data = ae_dataloader.AE_loader()
     elif config['model'] in ('VAE'):
         pass
@@ -44,7 +45,7 @@ def main():
     
     ######################## Train/Valid Split
     print(f'\n--------------- {config['model']} Train/Valid Split ---------------')
-    if config['model'] in ('AutoEncoder', 'DAE'):
+    if config['model'] in ('AutoEncoder', 'DAE', 'Multi-DAE'):
         train_dict, valid_dict = ae_dataloader.AE_split()
     elif config['model'] in ('VAE'):
         pass
@@ -64,7 +65,16 @@ def main():
     dims = [ae_dataloader.num_item] + config['dims'] #num_item = 6,807
     model = models_load(config, dims)
     print(model)
-    criterion = nn.MSELoss()
+    
+    if config['loss_function'] == 'MSE':
+        criterion = nn.MSELoss()
+    elif config['loss_function'] == 'BCE':
+        criterion = nn.BCELoss()
+    elif config['loss_function'] == 'cross_entropy':
+        criterion = nn.CrossEntropyLoss()
+    else:
+        raise Exception("Loss function Error. please check config file")
+        
     optimizer = torch.optim.Adam(model.parameters(), lr=config['learning_rate'], weight_decay=config['weight_decay'])
     
     ######################## TRAIN

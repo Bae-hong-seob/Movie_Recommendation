@@ -4,10 +4,11 @@ seed: 42
 valid_samples: 10
 Recall@K: 10
 
-model: 'AutoEncoder'
+model: 'Multi-DAE'
 dims: [600,200]
 activate_function: 'ReLU'
-loss_function: 'MSE'
+denoising: 'Dropout'
+loss_function: 'cross_entropy'
 
 model_path: './saved_models/'
 

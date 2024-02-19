@@ -18,3 +18,7 @@ Tiemstamp:20240206_035701, Recall@10:0.17508928571428584 public:0.1319 #noise: n
 Tiemstamp:20240206_043326, Recall@10:0.16895089285714250 public:0.1301 #noise: matrix += torch.randn()
 Tiemstamp:20240206_045949, Recall@10:0.16865752551020280 public:0.1291 #noiseL matrix += torch.randn()*0.2
 Tiemstamp:20240206_052744, Recall@10:0.17086734693877328 public:0.1276 #17줄 재현확인.
+
+Multi-DAE
+Tiemstamp:20240219_051147, Recall@10:0.16779336734693492 #loss function: torch.nn.CrossEntropyLoss
+Tiemstamp:20240219_054514, Recall@10:0.16742028061224168 #loss function: 직접 구현.

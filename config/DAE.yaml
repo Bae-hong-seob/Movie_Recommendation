@@ -8,6 +8,7 @@ model: 'DAE'
 dims: [600,200]
 activate_function: 'ReLU'
 denoising: 'Dropout'
+loss_function: 'MSE'
 
 model_path: './saved_models/'
 
