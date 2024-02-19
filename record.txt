@@ -12,6 +12,8 @@ Tiemstamp:20240204_051138, Recall@10:0.18273915816326700 public:0.1394 #dims=[25
 Tiemstamp:20240204_052414, Recall@10:0.17593749999999970 #batch size 512
 Tiemstamp:20240204_052830, Recall@10:0.15747130102040030 #batch size 64
 Tiemstamp:20240204_071539, Recall@10:0.18297831632653310 public:0.1392 #9번째줄 재현 확인. dims=[600,200], 마지막 layer ReLU 제거
+Tiemstamp:20240219_081855, Recall@10:0.16447066326530260 public:0.1270 #loss function: croo_entropy
+
 
 DAE
 Tiemstamp:20240206_035701, Recall@10:0.17508928571428584 public:0.1319 #noise: nn.Dropout
@@ -20,5 +22,5 @@ Tiemstamp:20240206_045949, Recall@10:0.16865752551020280 public:0.1291 #noiseL m
 Tiemstamp:20240206_052744, Recall@10:0.17086734693877328 public:0.1276 #17줄 재현확인.
 
 Multi-DAE
-Tiemstamp:20240219_051147, Recall@10:0.16779336734693492 #loss function: torch.nn.CrossEntropyLoss
+Tiemstamp:20240219_051147, Recall@10:0.16779336734693492 public:0.1277 #loss function: torch.nn.CrossEntropyLoss
 Tiemstamp:20240219_054514, Recall@10:0.16742028061224168 #loss function: 직접 구현.
