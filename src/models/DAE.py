@@ -63,6 +63,7 @@ class DAE(nn.Module):
         if self.config['denoising'] == 'Dropout':
             h = F.normalize(input)
             h = self.drop(h)
+            
         elif self.config['denoising'] == 'Gaussian':
             h = self.add_noise(input)
             h = F.normalize(h)
