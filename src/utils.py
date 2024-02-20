@@ -5,6 +5,7 @@ import random
 
 from .models.AutoEncoder import AutoEncoder
 from .models.DAE import DAE
+from .models.VAE import VAE
 
 class Setting:
     @staticmethod
@@ -89,9 +90,8 @@ def models_load(config, dims):
         model = AutoEncoder(config, dims)
     elif config['model'] in ('DAE', 'Multi-DAE'):
         model = DAE(config, dims)
-        pass
     elif config['model'] in ('VAE'):
-        pass
+        model = VAE(config, dims)
     else:
         raise ValueError('MODEL is not exist : select model in [AutoEncoder, DAE, Multi-DAE, VAE]')
     
