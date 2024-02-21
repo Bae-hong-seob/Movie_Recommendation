@@ -1,0 +1,21 @@
+data_dir: './data'
+
+seed: 42
+valid_samples: 10
+Recall@K: 10
+
+model: 'Multi-VAE'
+dims: [600,200]
+activate_function: 'Tanh'
+denoising: 'Dropout'
+loss_function: 'cross_entropy'
+anneal_cap: 0.2
+total_anneal_steps: 200000
+
+model_path: './saved_models/'
+
+epochs: 10
+batch_size: 256
+learning_rate: 0.005
+num_workers: 2
+weight_decay: 0

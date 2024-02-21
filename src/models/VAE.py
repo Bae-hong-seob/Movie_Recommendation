@@ -67,10 +67,10 @@ class VAE(nn.Module):
             h = F.normalize(h)
 
         h = self.encoder(h)
-        h = self.reparameterize(h)
+        h, mu, logvar = self.reparameterize(h)
         h = self.decoder(h)
         
-        return h
+        return h, mu, logvar
   
     def get_codes(self, x):
         return self.encoder(x)
@@ -90,4 +90,4 @@ class VAE(nn.Module):
         eps = torch.randn_like(std)
         
         z = mu + (std*eps)
-        return z
+        return z, mu, logvar

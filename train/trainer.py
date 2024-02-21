@@ -25,18 +25,33 @@ def get_hit(pred_list, true_list):
     hit = len(hit_list) / len(true_list)
     return hit
 
-
-def train(model, criterion, optimizer, data_loader, make_matrix_data_set):
-
+update_count=0
+def train(config, model, criterion, optimizer, data_loader, make_matrix_data_set):
+    
     model.train()
     loss_val = 0
     for users in data_loader:
         mat = make_matrix_data_set.make_matrix(users)
         mat = mat.to(device)
-        recon_mat = model(mat)
-
-        optimizer.zero_grad()
-        loss = criterion(recon_mat, mat)
+        
+        if config['model'] in ['VAE', 'Multi-VAE']:
+            recon_mat, mu, logvar = model(mat)
+            optimizer.zero_grad()
+            
+            if config['loss_function'] == 'cross_entropy':
+                global update_count
+                
+                BCE = criterion(recon_mat, mat)
+                KLD = -0.5 * torch.mean(torch.sum(1 + logvar - mu.pow(2) - logvar.exp(), dim=1))
+                anneal = min(config['anneal_cap'], 1. * update_count / config['total_anneal_steps'])
+                update_count+=1
+                loss = BCE+(anneal*KLD)
+            else:
+                loss = criterion(recon_mat, mat)
+        else:
+            recon_mat = model(mat)
+            optimizer.zero_grad()
+            loss = criterion(recon_mat, mat)
         
         loss_val += loss.item()
 
@@ -62,8 +77,11 @@ def evaluate(config, model, data_loader, user_train, user_valid, make_matrix_dat
             '''
             mat = make_matrix_data_set.make_matrix(users)
             mat = mat.to(device)
-
-            recon_mat = model(mat)
+            
+            if config['model'] in ['VAE', 'Multi-VAE']:
+                recon_mat, _, _ = model(mat)
+            else:
+                recon_mat = model(mat)
             recon_mat[mat == 1] = -np.inf
             rec_items_per_user = top_k_indices(recon_mat, config['Recall@K'])
 
@@ -87,8 +105,12 @@ def predict(config, model, data_loader, user_train, user_valid, make_matrix_data
         for users in data_loader:
             mat = make_matrix_data_set.make_matrix(users, train = False)
             mat = mat.to(device)
-
-            recon_mat = model(mat)
+            
+            if config['model'] in ['VAE', 'Multi-VAE']:
+                recon_mat, _, _ = model(mat)
+            else:
+                recon_mat = model(mat)
+                
             recon_mat = recon_mat.softmax(dim = 1)
             recon_mat[mat == 1] = -1.
             rec_items_per_user = top_k_indices(recon_mat, config['Recall@K'])

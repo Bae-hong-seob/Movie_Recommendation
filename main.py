@@ -14,11 +14,26 @@ from src.dataloader.autoencoder import AE_DataLoader, AE_DataSet
 
 from train.trainer import train, evaluate, predict
 
+class vae_loss_fuction:
+    def __init__(self, recon_x, x, mu, logvar):
+        self.recon_x = recon_x
+        self.x = x
+        self.mu, self.logvar = mu, logvar
+        
+    def forward():
+        BCE = -torch.mean(torch.sum(F.log_softmax(recon_x, 1) * x, -1))
+        KLD = -0.5 * torch.mean(torch.sum(1 + logvar - mu.pow(2) - logvar.exp(), dim=1))    
+
+def vae_loss_function(recon_x, x, mu, logvar):
+    BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784), reduction = 'sum')
+    KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
+    return BCE, KLD
+
 
 def main():
     ####################### configs
     print()
-    model_name = input('모델을 선택하세요(AE | DAE | Multi-DAE | VAE) :')
+    model_name = input('모델을 선택하세요(AE | DAE | Multi-DAE | VAE | Multi-VAE) :')
     #config_path = './config/autoencoder.yaml'
     config_path = './config/' + model_name +'.yaml'
     with open(config_path) as f:
@@ -35,18 +50,18 @@ def main():
     ######################## DATA LOAD
     ae_dataloader = AE_DataLoader(config)
     print(f'\n--------------- {config['model']} Load Data ---------------')
-    if config['model'] in ('AutoEncoder', 'DAE', 'Multi-DAE', 'VAE'):
+    if config['model'] in ('AutoEncoder', 'DAE', 'Multi-DAE', 'VAE', 'Multi-VAE'):
         data = ae_dataloader.AE_loader()
     else:
-        pass
+        raise Exception('check model name on config file ')
     print(data.head(5))
     
     ######################## Train/Valid Split
     print(f'\n--------------- {config['model']} Train/Valid Split ---------------')
-    if config['model'] in ('AutoEncoder', 'DAE', 'Multi-DAE', 'VAE'):
+    if config['model'] in ('AutoEncoder', 'DAE', 'Multi-DAE', 'VAE', 'Multi-VAE'):
         train_dict, valid_dict = ae_dataloader.AE_split()
     else:
-        pass
+        raise Exception('check model name on config file ')
 
     print(f'n_items for first user to train: {len(train_dict[0])}')
     print(f'n_items for first user to valid: {len(valid_dict[0])}')
@@ -82,7 +97,7 @@ def main():
     for epoch in range(1, config['epochs'] + 1):
         tbar = tqdm(range(1))
         for _ in tbar:
-            train_loss = train(model = model, criterion = criterion, optimizer = optimizer, data_loader = data_loader, make_matrix_data_set = ae_dataloader)
+            train_loss = train(config, model, criterion, optimizer, data_loader, make_matrix_data_set = ae_dataloader)
             ndcg, hit = evaluate(config=config, model = model, data_loader = data_loader, user_train = train_dict, user_valid = valid_dict, make_matrix_data_set = ae_dataloader)
 
             if best_hit < hit:
