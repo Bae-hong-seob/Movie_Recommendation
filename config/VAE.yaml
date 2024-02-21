@@ -6,7 +6,7 @@ Recall@K: 10
 
 model: 'VAE'
 dims: [600,200]
-activate_function: 'ReLU'
+activate_function: 'Tanh'
 denoising: 'Dropout'
 loss_function: 'MSE'
 

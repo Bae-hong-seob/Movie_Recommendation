@@ -62,6 +62,8 @@ def main():
     model = models_load(config, dims)
     print(model)
     
+    
+    ######################## Loss functions
     if config['loss_function'] == 'MSE':
         criterion = nn.MSELoss()
     elif config['loss_function'] == 'BCE':

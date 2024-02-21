@@ -24,3 +24,9 @@ Tiemstamp:20240206_052744, Recall@10:0.17086734693877328 public:0.1276 #17줄 �
 Multi-DAE
 Tiemstamp:20240219_051147, Recall@10:0.16779336734693492 public:0.1277 #loss function: torch.nn.CrossEntropyLoss
 Tiemstamp:20240219_054514, Recall@10:0.16742028061224168 #loss function: 직접 구현.
+
+VAE
+Tiemstamp:20240221_034309, Recall@10:0.19147002551020986 public:0.1467 #activate function tanh
+Tiemstamp:20240221_035909, Recall@10:0.19003188775510563
+Tiemstamp:20240221_041416, Recall@10:0.15334183673468363
+Tiemstamp:20240221_042245, Recall@10:0.1928730867346976
