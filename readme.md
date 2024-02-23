@@ -29,3 +29,6 @@
 ## Experiment
 모델 선정 및 분석 : public score기준 각 데이터에서 좋은 성능을 보이는 모델을 선정
 - VAE(Variational AutoEncoder) : 0.1467
+
+## Evaluation
+<img width="791" alt="Untitled" src="https://github.com/Bae-hong-seob/Movie_Recommendation/assets/49437396/ff4baca1-216f-4cbd-ab3a-724f12d4427f">
