@@ -27,7 +27,10 @@
 5. 윤도현 : 데이터 EDA, RecVae 구현
 
 ## Experiment
-모델 선정 및 분석 : public score기준 각 데이터에서 좋은 성능을 보이는 모델을 선정
+Data Engineering
+- rating.csv 파일을 통해 user-item interaction(binary) matrix 생성
+
+모델 선정 및 분석: public score기준 각 데이터에서 좋은 성능을 보이는 모델을 선정
 - VAE(Variational AutoEncoder) : 0.1467
 
 ## Evaluation
