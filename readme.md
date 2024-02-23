@@ -12,3 +12,6 @@
 ![image](https://github.com/Bae-hong-seob/Movie_Recommendation/assets/49437396/fda45a1a-45bf-400d-b4c7-616dbb0a3ba5)
 
 [Dataset](https://grouplens.org/datasets/movielens/)
+<img width="289" alt="image" src="https://github.com/Bae-hong-seob/Movie_Recommendation/assets/49437396/ef5ec5a9-b161-4695-b972-4ceb49dfe3a8">
+- **input:** user의 implicit 데이터, item(movie)의 meta데이터 (tsv)
+- **output:** user에게 추천하는 10개의 item 목록을 user, item이 ','로 구분된 파일(csv) 로 제출
