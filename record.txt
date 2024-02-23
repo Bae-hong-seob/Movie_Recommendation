@@ -33,4 +33,4 @@ Tiemstamp:20240221_042245, Recall@10:0.19287308673469760 public:0.1460 #dropout=
 Tiemstamp:20240221_045500, Recall@10:0.19262117346939192
 
 Multi-VAE
-Tiemstamp:20240221_051417, Recall@10:0.16932079081632280 #loss function 수정. 
+Tiemstamp:20240221_051417, Recall@10:0.16932079081632280 public:0.1292 #loss function 수정. 
