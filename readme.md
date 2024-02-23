@@ -29,9 +29,12 @@
 ## Experiment
 Data Engineering
 - rating.csv 파일을 통해 user-item interaction(binary) matrix 생성
+- 사용자별 item interaction timestamp 기준으로 sequence 생성
+- 전체 user-item interaction을 matrix로 구성하여 AutoEncoder input으로 제공
 
 모델 선정 및 분석: public score기준 각 데이터에서 좋은 성능을 보이는 모델을 선정
-- VAE(Variational AutoEncoder) : 0.1467
+- VAE(Variational AutoEncoder) : 0.1467 (DAE << AE << VAE)
+- Loss function: MSE (Multinomial <<< MSE)
 
 ## Evaluation
 <img width="791" alt="Untitled" src="https://github.com/Bae-hong-seob/Movie_Recommendation/assets/49437396/ff4baca1-216f-4cbd-ab3a-724f12d4427f">
