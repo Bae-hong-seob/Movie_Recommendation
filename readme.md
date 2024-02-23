@@ -18,3 +18,10 @@
 [MovieLens](https://grouplens.org/datasets/movielens/)
 - **input:** user의 implicit 데이터, item(movie)의 meta데이터 (tsv)
 - **output:** user에게 추천하는 10개의 item 목록을 user, item이 ','로 구분된 파일(csv) 로 제출
+
+## Team members
+1. 김진용 : GRU4Rec 구현
+2. 박치언 : SASRec, Bert4Rec 참조 및 구현
+3. 배홍섭 : Data Engineering 및 AutoEncoder(AE, DAE, VAE) 구현
+4. 안제준 : Sequential model 구현 및 하이퍼 파라미터 튜닝
+5. 윤도현 : 데이터 EDA, RecVae 구현
