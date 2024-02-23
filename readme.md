@@ -25,3 +25,7 @@
 3. 배홍섭 : Data Engineering 및 AutoEncoder(AE, DAE, VAE) 구현
 4. 안제준 : Sequential model 구현 및 하이퍼 파라미터 튜닝
 5. 윤도현 : 데이터 EDA, RecVae 구현
+
+## Experiment
+모델 선정 및 분석 : public score기준 각 데이터에서 좋은 성능을 보이는 모델을 선정
+- VAE(Variational AutoEncoder) : 0.1467
